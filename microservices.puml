@@ -1,0 +1,28 @@
+title Microservices with infrastructure
+
+!include <cloudinsight/kafka>
+!include <cloudinsight/redis>
+!include <cloudinsight/elasticsearch>
+!include <cloudinsight/postgresql>
+
+cloud "Website X" as x
+cloud "Website Y" as y
+database "<$redis> Redis" as redis
+database "<$elasticsearch> Elasticsearch" as elasticsearch
+database "<$postgresql> Postgresql" as postgresql
+queue "<$kafka> topic-one" as topicOne
+queue "<$kafka> topic-two" as domainEvents
+component "Microservice A" as serviceA
+component "Microservice B" as serviceB
+component "Microservice C" as serviceC
+
+serviceA -up-> x
+serviceA -left-> redis
+serviceA ..> topicOne : writes events
+
+serviceB -up-> y
+serviceB ..> domainEvents : reads events
+
+serviceA -> serviceC
+serviceC -> elasticsearch
+serviceC -> postgresql

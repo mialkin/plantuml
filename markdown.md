@@ -14,5 +14,4 @@ user --> [Gateway.Api]
 [Gateway.Api] --> [Products.Api]
 [Gateway.Api] --> [Documents.Api]
 [Gateway.Api] --> [Content.Api]
-
 ```
